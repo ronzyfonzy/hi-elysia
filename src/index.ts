@@ -1,19 +1,22 @@
 import { Elysia, t } from "elysia";
 import { swagger } from "@elysiajs/swagger";
-import { databasePlugin } from "./database";
+// import { databasePlugin } from "./database";
+import { BooksDatabase } from "./BooksDatabase";
+
+const database = new BooksDatabase();
 
 new Elysia()
   .use(swagger())
-  .use(databasePlugin())
+  // .use(databasePlugin())
   .group("/books", (app) =>
     app
-      .get("/", async ({ database }) => {
+      .get("/", async () => {
         console.log(database);
         return await database.getBooks();
       })
       .post(
         "/",
-        async ({ database, body }) => {
+        async ({ body }) => {
           console.log(body);
           const result = await database.addBook(body);
           console.log(result);
